@@ -1,5 +1,6 @@
 import React from "react";
 import { AppBar, Toolbar, Typography, Button } from "@mui/material";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   return (
@@ -10,7 +11,9 @@ const Header = () => {
       }}
     >
       <Toolbar>
-        <Typography>App Header</Typography>
+        <Link to="/" style={{ display: "flex" }}>
+          <img src="logo.png" alt="logo" style={{ maxWidth: "150px" }} />
+        </Link>
         <Button
           sx={{
             ml: "auto",

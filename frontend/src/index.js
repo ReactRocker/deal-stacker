@@ -1,17 +1,22 @@
 import React from "react";
-import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 import App from "./App";
 import { store } from "./store/store";
 import { Provider } from "react-redux";
 import { ThemeConfig } from "./theme";
+import { SnackbarProvider } from "notistack";
+import { BrowserRouter } from "react-router-dom";
 
-ReactDOM.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <ThemeConfig>
-        <App />
-      </ThemeConfig>
-    </Provider>
-  </React.StrictMode>,
-  document.getElementById("root")
+const root = createRoot(document.getElementById("root"));
+
+root.render(
+  <Provider store={store}>
+    <ThemeConfig>
+      <SnackbarProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </SnackbarProvider>
+    </ThemeConfig>
+  </Provider>
 );

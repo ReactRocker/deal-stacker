@@ -1,14 +1,11 @@
 import React from "react";
-import Header from "./components/Header";
-import Footer from "./components/Footer";
-import Main from "./components/Main";
+import Layout from "./layout";
 
 function App() {
+  // useNotifier();
   return (
     <div className="app-container">
-      <Header />
-      <Main />
-      <Footer />
+      <Layout />
     </div>
   );
 }

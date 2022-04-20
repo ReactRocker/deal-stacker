@@ -1,8 +1,9 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
-import mainSlice from "../redux/mainSlice";
+import strategySlice from "../redux/strategy/strategySlice";
 
 const rootReducer = combineReducers({
-  main: mainSlice,
+  // snackbars: snackbarSlice,
+  strategy: strategySlice,
 });
 
 export const store = configureStore({
