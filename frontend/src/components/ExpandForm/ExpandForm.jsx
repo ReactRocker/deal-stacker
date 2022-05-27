@@ -64,17 +64,23 @@ export default function ExpandForm({ segment, stepSlug, optionSlug }) {
               <Button
                 sx={{ mb: 1.5 }}
                 onClick={() => {
-                  const res = {
-                    withSubs: true,
-                    fields,
-                    fieldTitle: value,
-                    fieldSlug: slugify(value, "_"),
-                    segment,
-                    stepSlug,
-                    optionSlug
-                  };
-                  console.log(res);
-                  dispatch(addStepField(res));
+                  if (
+                    validator.isLength(value, { min: 5 }) &&
+                    validator.ltrim(value) &&
+                    validator.isAlphanumeric(value, "en-US", { ignore: " " })
+                  ) {
+                    dispatch(
+                      addStepField({
+                        withSubs: true,
+                        fields,
+                        fieldTitle: value,
+                        fieldSlug: slugify(value, "_"),
+                        segment,
+                        stepSlug,
+                        optionSlug,
+                      })
+                    );
+                  }
                 }}
               >
                 Add

@@ -58,8 +58,8 @@ export const strategySlice = createSlice({
       });
       state.finished = false;
     },
-    stepFieldsDataPush({ stepFieldsData }, { payload: { slug, data } }) {
-      stepFieldsData[slug] = data;
+    stepFieldsDataPush({ stepFieldsData }, { payload: { stepSlug, data } }) {
+      stepFieldsData[stepSlug] = data;
     },
     stepFieldsdataUpdate(state, action) {},
     stepFieldsdataRemove(state, action) {},
@@ -179,8 +179,10 @@ export const selectActiveStep = (state) =>
   state.strategy.steps.find((i) => i?.active === true);
 export const selectSkipped = (state) =>
   state.strategy.steps.find((i) => i?.skipped === true);
-export const selectStepFieldsData = (slug) => (state) =>
-  state.strategy.stepFieldsData[slug] || null;
+export const selectStepFieldsData = (slug) => (state) => {
+  const res = state.strategy.stepFieldsData[slug] || null;
+  return res;
+};
 export const selectAll = (state) => state.strategy;
 
 export const {
