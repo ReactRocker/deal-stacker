@@ -3,6 +3,7 @@ const { fieldValueTypeCheck } = require("../utils");
 
 // TODO: Make general-purpose field Schema
 const FieldSchema = new Schema({
+  slug: String,
   field_title: {
     type: String,
     required: [true, "Please provide field name"],
@@ -16,9 +17,6 @@ const FieldSchema = new Schema({
   }),
   value: {
     type: Number,
-    // set: (value) => {
-    //   return fieldValueTypeCheck(value, this);
-    // },
   },
 });
 

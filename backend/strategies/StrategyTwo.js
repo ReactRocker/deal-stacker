@@ -4,7 +4,7 @@ module.exports = {
   strategy_slug: "rent-to-rent-hmo-sa",
   steps: {
     initial_spend: {
-      step_title: "Initial Spend",
+      stepTitle: "Initial Spend",
       description: null,
       hasOptions: false,
       canSkip: false,
@@ -12,7 +12,7 @@ module.exports = {
       options: null,
       spreadsheets: {
         initial_spend: {
-          spreadsheet_title: "Initial Spend", //provide normal title
+          spreadsheetTitle: "Initial Spend", //provide normal title
           spreadsheet_type: "normal",
           fields: {
             rent: {
@@ -59,18 +59,18 @@ module.exports = {
       },
     },
     rental_income: {
-      step_title: "Works",
+      stepTitle: "Works",
       description: null,
       hasOptions: true,
       canSkip: true,
       tooltip: null,
       options: {
         hmo: {
-          option_title: "Mortgage",
+          optionTitle: "Mortgage",
           description: null,
           spreadsheets: {
             hmo: {
-              spreadsheet_title: "HMO",
+              spreadsheetTitle: "HMO",
               spreadsheet_type: "normal",
               fields: {
                 room_1: {
@@ -115,11 +115,11 @@ module.exports = {
           },
         },
         serviced_acc: {
-          option_title: "Serviced Acc",
+          optionTitle: "Serviced Acc",
           desctiption: null,
           spreadsheets: {
             serviced_acc: {
-              spreadsheet_title: "Serviced Acc",
+              spreadsheetTitle: "Serviced Acc",
               spreadsheet_type: "normal",
               fields: {
                 room_1_nightly_rate: {
@@ -177,7 +177,7 @@ module.exports = {
       spreadsheets: null,
     },
     expenses: {
-      step_title: "Expenses",
+      stepTitle: "Expenses",
       description: null,
       hasOptions: true,
       canSkip: true,
@@ -185,11 +185,11 @@ module.exports = {
       // 2 headers in excel spreadsheet
       options: {
         hmo: {
-          option_title: "HMO",
+          optionTitle: "HMO",
           description: null,
           spreadsheets: {
             monthly_operating_costs: {
-              spreadsheet_title: "HMO",
+              spreadsheetTitle: "HMO",
               spreadsheet_type: "normal",
               fields: {
                 letting_agent_fee: {
@@ -240,18 +240,18 @@ module.exports = {
               },
             },
             results: {
-              spreadsheet_title: "Results",
+              spreadsheetTitle: "Results",
               spreadsheet_type: "normal",
               fields: {},
             },
           },
         },
         serviced_acc: {
-          option_title: "Serviced Acc",
+          optionTitle: "Serviced Acc",
           description: null,
           spreadsheets: {
             monthly_operating_costs: {
-              spreadsheet_title: "Monthly Operating Costs",
+              spreadsheetTitle: "Monthly Operating Costs",
               spreadsheet_type: "normal",
               fields: {
                 letting_agent_fee: {
@@ -297,7 +297,7 @@ module.exports = {
               },
             },
             costs_per_stay: {
-              spreadsheet_title: "Costs per Stay",
+              spreadsheetTitle: "Costs per Stay",
               spreadsheet_type: "normal",
               fields: {
                 cleaning_per_change_over: {
@@ -312,7 +312,7 @@ module.exports = {
               },
             },
             results: {
-              spreadsheet_title: "Result",
+              spreadsheetTitle: "Result",
               spreadsheet_type: "normal",
               fields: {},
             },
@@ -322,7 +322,7 @@ module.exports = {
       spreadsheets: null,
     },
     report: {
-      step_title: "Report",
+      stepTitle: "Report",
       description: null,
       hasOptions: false,
       tooltip: null,

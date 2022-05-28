@@ -366,41 +366,116 @@ class CalcControllec {
   //       ];
   //   }
   // };
-  _normalize = (steps) => {
-    // console.log("normalize");
-    // console.log("steps:", steps);
-    try {
-      const res = Object.keys(steps).map((i, index) => {
-        const {
-          step_title,
-          description,
-          hasOptions,
-          canSkip,
-          tooltip,
-          options,
-          spreadsheets,
-        } = steps[i];
-        return {
-          id: index,
-          slug: i,
-          stepTitle: step_title,
-          active: index === 0 ? true : false,
-          compleated: false,
-          skipped: false,
-          description,
-          hasOptions,
-          canSkip,
-          tooltip,
-          options: hasOptions
-            ? Object.keys(options).map((i) => {
-                const { option_title, description, spreadsheets } = options[i];
-                return {
-                  optionSlug: i,
-                  optionTitle: option_title,
-                  description,
-                  spreadsheets: Object.keys(spreadsheets).map((i) => {
+  _normalize = (steps, mode = "normal") => {
+    switch (mode) {
+      case "normal":
+        try {
+          const res = Object.keys(steps).map((i, index) => {
+            const {
+              stepTitle,
+              description,
+              hasOptions,
+              canSkip,
+              tooltip,
+              options,
+              spreadsheets,
+            } = steps[i];
+            return {
+              id: index,
+              slug: i,
+              stepTitle,
+              active: index === 0 ? true : false,
+              compleated: false,
+              skipped: false,
+              description,
+              hasOptions,
+              canSkip,
+              tooltip,
+              options: hasOptions
+                ? Object.keys(options).map((i) => {
+                    const { optionTitle, description, spreadsheets } =
+                      options[i];
+                    return {
+                      optionSlug: i,
+                      optionTitle,
+                      description,
+                      spreadsheets: Object.keys(spreadsheets).map((i) => {
+                        const {
+                          spreadsheetTitle,
+                          canBeExpanded,
+                          twoD,
+                          spreadsheet_type,
+                          fields,
+                          subSpreadsheets,
+                        } = spreadsheets[i];
+                        if (twoD === true) {
+                          return {
+                            slug: i,
+                            title: spreadsheetTitle,
+                            canBeExpanded: {
+                              ...canBeExpanded,
+                              fields:
+                                canBeExpanded.fields &&
+                                Object.keys(canBeExpanded.fields).map((i) => {
+                                  return {
+                                    slug: i,
+                                    ...canBeExpanded.fields[i],
+                                  };
+                                }),
+                            },
+                            twoD,
+                            subSpreadsheets: Object.keys(subSpreadsheets).map(
+                              (i) => {
+                                return {
+                                  subStreadsheetSlug: i,
+                                  subSpreadsheetTitle: subSpreadsheets[i].title,
+                                  fields: Object.keys(
+                                    subSpreadsheets[i].fields
+                                  ).map((o) => {
+                                    return {
+                                      slug: o,
+                                      ...subSpreadsheets[i].fields[o],
+                                    };
+                                  }),
+                                };
+                              }
+                            ),
+                            spreadsheetType: spreadsheet_type,
+                          };
+                        } else if (twoD === false) {
+                          return {
+                            slug: i,
+                            title: spreadsheetTitle,
+                            canBeExpanded: {
+                              ...canBeExpanded,
+                              fields:
+                                canBeExpanded.fields &&
+                                Object.keys(canBeExpanded.fields).map((i) => {
+                                  return {
+                                    slug: i,
+                                    ...canBeExpanded.fields[i],
+                                  };
+                                }),
+                            },
+                            twoD,
+                            subSpreadsheets,
+                            spreadsheetType: spreadsheet_type,
+                            fields: Object.keys(fields).map((i) => {
+                              return {
+                                slug: i,
+                                ...fields[i],
+                              };
+                            }),
+                          };
+                        }
+                      }),
+                    };
+                  })
+                : options,
+              spreadsheets: !hasOptions
+                ? Object.keys(spreadsheets).map((i) => {
                     const {
-                      spreadsheet_title,
+                      spreadsheetTitle,
                       canBeExpanded,
                       twoD,
                       spreadsheet_type,
@@ -410,7 +485,7 @@ class CalcControllec {
                     if (twoD === true) {
                       return {
                         slug: i,
-                        title: spreadsheet_title,
+                        title: spreadsheetTitle,
                         canBeExpanded: {
                           ...canBeExpanded,
                           fields:
@@ -444,7 +519,7 @@ class CalcControllec {
                     } else if (twoD === false) {
                       return {
                         slug: i,
-                        title: spreadsheet_title,
+                        title: spreadsheetTitle,
                         canBeExpanded: {
                           ...canBeExpanded,
                           fields:
@@ -467,85 +542,194 @@ class CalcControllec {
                         }),
                       };
                     }
-                  }),
-                };
-              })
-            : options,
-          spreadsheets: !hasOptions
-            ? Object.keys(spreadsheets).map((i) => {
-                const {
-                  spreadsheet_title,
-                  canBeExpanded,
-                  twoD,
-                  spreadsheet_type,
-                  fields,
-                  subSpreadsheets,
-                } = spreadsheets[i];
-                if (twoD === true) {
-                  return {
-                    slug: i,
-                    title: spreadsheet_title,
-                    canBeExpanded: {
-                      ...canBeExpanded,
-                      fields:
-                        canBeExpanded.fields &&
-                        Object.keys(canBeExpanded.fields).map((i) => {
-                          return {
-                            slug: i,
-                            ...canBeExpanded.fields[i],
-                          };
-                        }),
-                    },
-                    twoD,
-                    subSpreadsheets: Object.keys(subSpreadsheets).map((i) => {
-                      return {
-                        subStreadsheetSlug: i,
-                        subSpreadsheetTitle: subSpreadsheets[i].title,
-                        fields: Object.keys(subSpreadsheets[i].fields).map(
-                          (o) => {
-                            return {
-                              slug: o,
-                              ...subSpreadsheets[i].fields[o],
-                            };
+                  })
+                : spreadsheets,
+            };
+          });
+          return res;
+        } catch (error) {
+          console.log(error);
+        }
+      // break;
+      case "reverse":
+        const res = new Map(
+          steps.map(
+            ({
+              id,
+              slug,
+              stepTitle,
+              active,
+              compleated,
+              skipped,
+              description,
+              hasOptions,
+              canSkip,
+              tooltip,
+              options,
+              spreadsheets,
+            }) => {
+              return [
+                slug,
+                {
+                  id,
+                  slug,
+                  active,
+                  compleated,
+                  skipped,
+                  stepTitle,
+                  description,
+                  hasOptions,
+                  canSkip,
+                  tooltip,
+                  options: hasOptions
+                    ? new Map(
+                        options.map(
+                          ({
+                            optionSlug,
+                            optionTitle,
+                            description,
+                            spreadsheets,
+                          }) => {
+                            return [
+                              optionSlug,
+                              {
+                                optionSlug,
+                                optionTitle,
+                                description,
+                                spreadsheets: new Map(
+                                  spreadsheets.map(
+                                    ({
+                                      slug,
+                                      canBeExpanded,
+                                      title,
+                                      twoD,
+                                      spreadsheetType,
+                                      subSpreadsheets,
+                                      fields,
+                                    }) => {
+                                      return [
+                                        slug,
+                                        {
+                                          spreadsheet_slug: slug,
+                                          spreadsheetTitle: title,
+                                          twoD,
+                                          canBeExpanded: !canBeExpanded.flag
+                                            ? canBeExpanded
+                                            : {
+                                                ...canBeExpanded,
+                                                fields: new Map(
+                                                  canBeExpanded.fields.map(
+                                                    (i) => {
+                                                      return [i.slug, { ...i }];
+                                                    }
+                                                  )
+                                                ),
+                                              }, //
+                                          subSpreadsheets: !twoD
+                                            ? subSpreadsheets
+                                            : new Map(
+                                                subSpreadsheets.map((i) => {
+                                                  return [
+                                                    i.title,
+                                                    {
+                                                      ...i,
+                                                      fields: new Map(
+                                                        i.fields.map((i) => {
+                                                          return [
+                                                            i.slug,
+                                                            { ...i },
+                                                          ];
+                                                        })
+                                                      ),
+                                                    },
+                                                  ];
+                                                })
+                                              ),
+                                          spreadsheetType,
+                                          field: !twoD
+                                            ? new Map(
+                                                fields.map((i) => {
+                                                  return [i.slug, { ...i }];
+                                                })
+                                              )
+                                            : {},
+                                        },
+                                      ];
+                                    }
+                                  )
+                                ),
+                              },
+                            ];
                           }
-                        ),
-                      };
-                    }),
-                    spreadsheetType: spreadsheet_type,
-                  };
-                } else if (twoD === false) {
-                  return {
-                    slug: i,
-                    title: spreadsheet_title,
-                    canBeExpanded: {
-                      ...canBeExpanded,
-                      fields:
-                        canBeExpanded.fields &&
-                        Object.keys(canBeExpanded.fields).map((i) => {
-                          return {
-                            slug: i,
-                            ...canBeExpanded.fields[i],
-                          };
-                        }),
-                    },
-                    twoD,
-                    subSpreadsheets,
-                    spreadsheetType: spreadsheet_type,
-                    fields: Object.keys(fields).map((i) => {
-                      return {
-                        slug: i,
-                        ...fields[i],
-                      };
-                    }),
-                  };
-                }
-              })
-            : spreadsheets,
-        };
-      });
-      return res;
-    } catch (error) {
-      console.log(error);
+                        )
+                      )
+                    : options,
+                  spreadsheets: !hasOptions
+                    ? new Map(
+                        spreadsheets.map(
+                          ({
+                            slug,
+                            title,
+                            twoD,
+                            spreadsheetType,
+                            canBeExpanded,
+                            fields,
+                            subSpreadsheets,
+                          }) => {
+                            return [
+                              slug,
+                              {
+                                twoD,
+                                spreadsheetSlug: slug,
+                                spreadsheetTitle: title,
+                                spreadsheetType,
+                                canBeExpanded: !canBeExpanded.flag
+                                  ? canBeExpanded
+                                  : {
+                                      ...canBeExpanded,
+                                      fields: new Map(
+                                        fields.map((i) => {
+                                          return [i.slug, { ...i }];
+                                        })
+                                      ),
+                                    },
+                                fields: !twoD
+                                  ? new Map(
+                                      fields.map((i) => {
+                                        return [i.slug, { ...i }];
+                                      })
+                                    )
+                                  : {},
+                                subSpreadsheets: !twoD
+                                  ? subSpreadsheets
+                                  : new Map(
+                                      subSpreadsheets.map((i) => {
+                                        return [
+                                          i.title,
+                                          {
+                                            ...i,
+                                            fields: new Map(
+                                              fields.map((i) => {
+                                                return [i.slug, { ...i }];
+                                              })
+                                            ),
+                                          },
+                                        ];
+                                      })
+                                    ),
+                              },
+                            ];
+                          }
+                        )
+                      )
+                    : spreadsheets,
+                },
+              ];
+            }
+          )
+        );
+        console.log(res);
+        return res;
     }
 
     // console.log(res);
@@ -587,11 +771,12 @@ class CalcControllec {
             created = await StrategyThreeModel.create(strategy);
             break;
         }
-        const { build_id, strategy_slug, build_title, steps } =
+        const { build_id, strategy_slug, build_title, steps, _id } =
           created.toObject({ flattenMaps: true });
         res.json({
           status: "success",
           strategy: {
+            _id,
             build_id,
             strategy_slug,
             build_title,
@@ -607,9 +792,82 @@ class CalcControllec {
     }
   };
 
+  // update = async (req, res, next) => {}
+
   update = async (req, res, next) => {
-    console.log("update");
+    const { steps, build_id, strategy_slug, build_title, _id } =
+      req.body.payload;
+    let updated;
+    switch (build_id) {
+      case 1:
+        updated = await StrategyOneModel.findByIdAndUpdate(
+          _id,
+          {
+            build_id,
+            build_title,
+            strategy_slug,
+            steps: this._normalize(steps, "reverse"),
+          },
+          { new: true }
+        );
+        break;
+      case 2:
+        updated = await StrategyTwoModel.findByIdAndUpdate(
+          _id,
+          {
+            build_id,
+            build_title,
+            strategy_slug,
+            steps: this._normalize(steps, "reverse"),
+          },
+          { new: true }
+        );
+        break;
+      case 3:
+        updated = await StrategyThreeModel.findByIdAndUpdate(
+          _id,
+          {
+            build_id,
+            build_title,
+            strategy_slug,
+            steps: this._normalize(steps, "reverse"),
+          },
+          { new: true }
+        );
+        break;
+    }
+    res.send(updated);
+    // res.json({
+    //   steps: JSON.parse(
+    //     JSON.stringify(
+    //       this._normalize(steps, "reverse"),
+    //       function (key, value) {
+    //         if (value instanceof Map) {
+    //           return {
+    //             dataType: "Map",
+    //             value: Array.from(value.entries()),
+    //           };
+    //         } else {
+    //           return value;
+    //         }
+    //       }
+    //     )
+    // function reviver(key, value) {
+    //   if (typeof value === "object" && value !== null) {
+    //     if (value.dataType === "Map") {
+    //       return new Map(value.value);
+    //     }
+    //   }
+    //   return value;
+    // }
+    // ),
+    // });
+    // const test =
+    // console.log("update");
     // const { data, id } = res.locals;
+    // strat
+    // step
+    // strat
     // try {
     //   const updated = await CalcDataModel.findByIdAndUpdate(
     //     id,

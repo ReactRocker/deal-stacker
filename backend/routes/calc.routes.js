@@ -17,7 +17,11 @@ router.get("/get-strategies", getStrategies);
 router.post("/pick", pickStrategy);
 router.get("/fetch", fetch);
 router.post("/create", create);
-router.put("/update", tokenCheck, documentCheck, dataCheck, update);
+router.put(
+  "/update",
+  // tokenCheck, documentCheck, dataCheck,
+  update
+);
 router.delete("/remove", tokenCheck, remove);
 
 module.exports = router;

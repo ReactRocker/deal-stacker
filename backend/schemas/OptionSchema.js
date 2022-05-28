@@ -2,7 +2,8 @@ const { Schema } = require("mongoose");
 const SpreadsheetSchema = require("./SpreadsheetSchema");
 
 const OptionSchema = new Schema({
-  option_title: {
+  optionSlug: String,
+  optionTitle: {
     type: String,
     required: [true, "Please provide option title"],
   },

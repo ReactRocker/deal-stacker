@@ -5,7 +5,21 @@ const TooltipSchema = require("./TooltipSchema");
 const OptionSchema = require("./OptionSchema");
 
 const StepSchema = new Schema({
-  step_title: {
+  id: Number,
+  slug: String,
+  active: {
+    type: Boolean,
+    default: false,
+  },
+  compleated: {
+    type: Boolean,
+    default: false,
+  },
+  skipped: {
+    type: Boolean,
+    default: false,
+  },
+  stepTitle: {
     type: String,
     required: [true, "Please, provide step title"],
   },

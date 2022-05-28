@@ -4,7 +4,7 @@ module.exports = {
   strategy_slug: "btl-bts-split-hmo-sa",
   steps: {
     purchasing: {
-      step_title: "Purchasing",
+      stepTitle: "Purchasing",
       description: "Sales point about HQ JV",
       hasOptions: false,
       canSkip: false,
@@ -12,7 +12,7 @@ module.exports = {
       options: null,
       spreadsheets: {
         costs_that_funding_can_include: {
-          spreadsheet_title: "Costs that funding can include",
+          spreadsheetTitle: "Costs that funding can include",
           spreadsheet_type: "normal",
           fields: {
             purchase_price: {
@@ -24,7 +24,7 @@ module.exports = {
           },
         },
         costs_that_funding_cant_include: {
-          spreadsheet_title: "Costs that funding cant include",
+          spreadsheetTitle: "Costs that funding cant include",
           spreadsheet_type: "normal",
           fields: {
             sdlt: {
@@ -56,7 +56,7 @@ module.exports = {
       },
     },
     works: {
-      step_title: "Works",
+      stepTitle: "Works",
       description: null,
       hasOptions: false,
       canSkip: true,
@@ -64,7 +64,7 @@ module.exports = {
       options: null,
       spreadsheets: {
         works_costs_that_can_be_included_in_funding: {
-          spreadsheet_title: "Works costs that can be included in funding",
+          spreadsheetTitle: "Works costs that can be included in funding",
           spreadsheet_type: "normal",
           fields: {
             total_build_cost: {
@@ -97,7 +97,7 @@ module.exports = {
           },
         },
         works_costs_that_are_separate_to_funding: {
-          spreadsheet_title: "Works costs that are separate to funding",
+          spreadsheetTitle: "Works costs that are separate to funding",
           spreadsheet_type: "normal",
           fields: {
             drawdowns: {
@@ -126,7 +126,7 @@ module.exports = {
       },
     },
     funding: {
-      step_title: "Funding",
+      stepTitle: "Funding",
       description:
         "Some of the fields sould be prepopulated but allow the user to change, the user should be able to select one option for the report or one option plus investor funds.",
       hasOptions: true,
@@ -134,11 +134,11 @@ module.exports = {
       tooltip: {},
       options: {
         mortgage: {
-          option_title: "Mortgage",
+          optionTitle: "Mortgage",
           description: null,
           spreadsheets: {
             mortgage: {
-              spreadsheet_title: "Mortgage",
+              spreadsheetTitle: "Mortgage",
               spreadsheet_type: "normal",
               fields: {
                 purchase_price: {
@@ -165,18 +165,18 @@ module.exports = {
               },
             },
             results: {
-              spreadsheet_title: "Result",
+              spreadsheetTitle: "Result",
               spreadsheet_type: "normal",
               fields: {},
             },
           },
         },
         peer_to_peer: {
-          option_title: "Peer to peer",
+          optionTitle: "Peer to peer",
           description: null,
           spreadsheets: {
             peer_to_peer: {
-              spreadsheet_title: "Peer to Peer",
+              spreadsheetTitle: "Peer to Peer",
               spreadsheet_type: "normal",
               fields: {
                 purchase_price: {
@@ -209,18 +209,18 @@ module.exports = {
               },
             },
             results: {
-              spreadsheet_title: "Result",
+              spreadsheetTitle: "Result",
               spreadsheet_type: "normal",
               fields: {},
             },
           },
         },
         bridging_loan: {
-          option_title: "Bridging Loan",
+          optionTitle: "Bridging Loan",
           description: null,
           spreadsheets: {
             bridging_loan: {
-              spreadsheet_title: "Bridging Loan",
+              spreadsheetTitle: "Bridging Loan",
               spreadsheet_type: "normal",
               fields: {
                 purchase_price: {
@@ -247,18 +247,18 @@ module.exports = {
               },
             },
             results: {
-              spreadsheet_title: "Result",
+              spreadsheetTitle: "Result",
               spreadsheet_type: "normal",
               fields: {},
             },
           },
         },
         investor_funds: {
-          option_title: "Investor Funds",
+          optionTitle: "Investor Funds",
           description: null,
           spreadsheets: {
             investor_funds: {
-              spreadsheet_title: "Investor Funds",
+              spreadsheetTitle: "Investor Funds",
               spreadsheet_type: "normal",
               // haven't formulas
               fields: {
@@ -292,7 +292,7 @@ module.exports = {
               },
             },
             results: {
-              spreadsheet_title: "Result",
+              spreadsheetTitle: "Result",
               spreadsheet_type: "normal",
               fields: {},
             },
@@ -302,7 +302,7 @@ module.exports = {
       spreadsheets: null,
     },
     gdv: {
-      step_title: "GDV",
+      stepTitle: "GDV",
       description: null,
       hasOptions: false,
       canSkip: false,
@@ -315,7 +315,7 @@ module.exports = {
             helperText: "Add Unit",
             expandType: "button",
           },
-          spreadsheet_title: "Sales Values",
+          spreadsheetTitle: "Sales Values",
           spreadsheet_type: "normal",
           fields: {
             unit_1: {
@@ -336,8 +336,7 @@ module.exports = {
           },
         },
         selling_fees: {
-
-          spreadsheet_title: "Selling Fees",
+          spreadsheetTitle: "Selling Fees",
           spreadsheet_type: "normal",
           fields: {
             agents_fee: {
@@ -351,18 +350,18 @@ module.exports = {
       },
     },
     rental_income: {
-      step_title: "Rental Income",
+      stepTitle: "Rental Income",
       description: null,
       hasOptions: true,
       tooltip: null,
       canSkip: true,
       options: {
         single_rental: {
-          option_title: "Single Rental",
+          optionTitle: "Single Rental",
           description: null,
           spreadsheets: {
             single_rental: {
-              spreadsheet_title: "Single Rental",
+              spreadsheetTitle: "Single Rental",
               spreadsheet_type: "normal",
               fields: {
                 total_monthly_rental_income: {
@@ -381,7 +380,7 @@ module.exports = {
               },
             },
             monthly_operating_costs: {
-              spreadsheet_title: "Monthly Operating Costs",
+              spreadsheetTitle: "Monthly Operating Costs",
               spreadsheet_type: "normal",
               fields: {
                 letting_agent_fee: {
@@ -429,18 +428,18 @@ module.exports = {
               },
             },
             results: {
-              spreadsheet_title: "Results",
+              spreadsheetTitle: "Results",
               spreadsheet_type: "normal",
               fields: {},
             },
           },
         },
         hmo: {
-          option_title: "HMO",
+          optionTitle: "HMO",
           description: null,
           spreadsheets: {
             hmo: {
-              spreadsheet_title: "HMO",
+              spreadsheetTitle: "HMO",
               spreadsheet_type: "normal",
               fields: {
                 total_monthly_rental_income: {
@@ -459,7 +458,7 @@ module.exports = {
               },
             },
             monthly_operating_costs: {
-              spreadsheet_title: "Monthly Operating Costs",
+              spreadsheetTitle: "Monthly Operating Costs",
               spreadsheet_type: "normal",
               fields: {
                 letting_agent_fee: {
@@ -507,18 +506,18 @@ module.exports = {
               },
             },
             results: {
-              spreadsheet_title: "Results",
+              spreadsheetTitle: "Results",
               spreadsheet_type: "normal",
               fields: {},
             },
           },
         },
         serviced_acc: {
-          option_title: "Serviced Acc",
+          optionTitle: "Serviced Acc",
           description: null,
           spreadsheets: {
             serviced_acc: {
-              spreadsheet_title: "Serviced Acc",
+              spreadsheetTitle: "Serviced Acc",
               spreadsheet_type: "normal",
               fields: {
                 total_monthly_rental_income: {
@@ -537,7 +536,7 @@ module.exports = {
               },
             },
             monthly_operating_costs: {
-              spreadsheet_title: "Monthly Operating Costs",
+              spreadsheetTitle: "Monthly Operating Costs",
               spreadsheet_type: "normal",
               fields: {
                 letting_agent_fee: {
@@ -585,7 +584,7 @@ module.exports = {
               },
             },
             results: {
-              spreadsheet_title: "Results",
+              spreadsheetTitle: "Results",
               spreadsheet_type: "normal",
               fields: {},
             },
@@ -595,7 +594,7 @@ module.exports = {
       spreadsheets: null,
     },
     report: {
-      step_title: "Report",
+      stepTitle: "Report",
       description: null,
       hasOptions: false,
       tooltip: null,

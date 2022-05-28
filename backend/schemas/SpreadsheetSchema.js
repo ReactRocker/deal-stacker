@@ -2,7 +2,8 @@ const { Schema } = require("mongoose");
 const FieldSchema = require("./FieldSchema");
 
 const SpreadsheetSchema = new Schema({
-  spreadsheet_title: {
+  spreadsheet_slug: String,
+  spreadsheetTitle: {
     type: String,
     required: [true, "Please provide spreadsheet title"],
   },
@@ -44,6 +45,7 @@ const SpreadsheetSchema = new Schema({
   fields: {
     type: Schema.Types.Map,
     of: FieldSchema,
+    default: {},
   },
   subSpreadsheets: {
     type: Schema.Types.Map,
@@ -55,8 +57,10 @@ const SpreadsheetSchema = new Schema({
       fields: {
         type: Schema.Types.Map,
         of: FieldSchema,
+        default: {},
       },
     }),
+    default: {},
   },
 });
 
