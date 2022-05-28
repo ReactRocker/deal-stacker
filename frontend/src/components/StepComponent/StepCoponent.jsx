@@ -153,7 +153,13 @@ export default function StepComponent({
     if (stepId === steps.length - 1) {
       dispatch(handleFinish());
     } else {
-      dispatch(stepFieldsDataPush({ stepSlug, data }));
+      dispatch(
+        stepFieldsDataPush({
+          // optionSlug,
+          stepSlug,
+          data,
+        })
+      );
       dispatch(handleNextStep(stepId));
     }
   };
@@ -174,13 +180,16 @@ export default function StepComponent({
                           key={v4()}
                           label={field.field_title}
                           error={errors?.[field.slug] ? true : false}
-                          {...register(field.slug, {
-                            validate: {
-                              isNum: (value) =>
-                                validator.isNumeric(value) ||
-                                "Value must be a number",
-                            },
-                          })}
+                          {...register(
+                            `${option.optionSlug}.${segment.slug}.${field.slug}`,
+                            {
+                              validate: {
+                                isNum: (value) =>
+                                  validator.isNumeric(value) ||
+                                  "Value must be a number",
+                              },
+                            }
+                          )}
                           helperText={errors?.[field.slug]?.message || false}
                         />
                       ))}
@@ -210,13 +219,16 @@ export default function StepComponent({
                                 key={v4()}
                                 label={field.field_title}
                                 error={errors?.[field.slug] ? true : false}
-                                {...register(field.slug, {
-                                  validate: {
-                                    isNum: (value) =>
-                                      validator.isNumeric(value) ||
-                                      "Value must be a number",
-                                  },
-                                })}
+                                {...register(
+                                  `${option.optionSlug}.${segment.slug}.${subs.subStreadsheetSlug}.${field.slug}`,
+                                  {
+                                    validate: {
+                                      isNum: (value) =>
+                                        validator.isNumeric(value) ||
+                                        "Value must be a number",
+                                    },
+                                  }
+                                )}
                                 helperText={
                                   errors?.[field.slug]?.message || false
                                 }
@@ -244,19 +256,19 @@ export default function StepComponent({
           !segment.twoD ? (
             <React.Fragment key={v4()}>
               <Segment title={segment.title}>
-                {segment.fields.map((o) => (
+                {segment.fields.map((field) => (
                   <StyledTextField
                     key={v4()}
-                    label={o.field_title}
-                    error={errors?.[o.slug] ? true : false}
-                    {...register(o.slug, {
+                    label={field.field_title}
+                    error={errors?.[field.slug] ? true : false}
+                    {...register(`${segment.slug}.${field.slug}`, {
                       validate: {
                         isNum: (value) =>
                           validator.isNumeric(value) ||
                           "Value must be a number",
                       },
                     })}
-                    helperText={errors?.[o.slug]?.message || false}
+                    helperText={errors?.[field.slug]?.message || false}
                   />
                 ))}
               </Segment>

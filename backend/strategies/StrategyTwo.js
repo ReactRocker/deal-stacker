@@ -59,7 +59,7 @@ module.exports = {
       },
     },
     rental_income: {
-      stepTitle: "Works",
+      stepTitle: "Rental Income",
       description: null,
       hasOptions: true,
       canSkip: true,

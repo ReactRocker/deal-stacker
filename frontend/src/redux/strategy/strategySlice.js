@@ -58,8 +58,64 @@ export const strategySlice = createSlice({
       });
       state.finished = false;
     },
-    stepFieldsDataPush({ stepFieldsData }, { payload: { stepSlug, data } }) {
-      stepFieldsData[stepSlug] = data;
+    // stepFieldsDataPush({ stepFieldsData }, { payload: { stepSlug, data } }) {
+    stepFieldsDataPush(state, { payload }) {
+      const { data, spreadsheetSlug, optionSlug, stepSlug } = payload;
+      const { hasOptions, options, spreadsheets } = state.steps.find(
+        (i) => i.slug === stepSlug
+      );
+      if (hasOptions) {
+        // const option = options.find((i) => i.optionSlug === optionSlug);
+        options.forEach((option) => {
+          if (option.active) {
+            option.spreadsheets.forEach(
+              ({ slug: spreadsheetSlug, fields, twoD, subSpreadsheets }) => {
+                if (!twoD) {
+                  fields.forEach((i) => {
+                    i.value = data[option.optionSlug][spreadsheetSlug][i.slug];
+                  });
+                } else {
+                  subSpreadsheets.forEach(
+                    ({ fields, subStreadsheetSlug, subSpreadsheetTitle }) => {
+                      // debugger;
+                      fields.forEach((i) => {
+                        console.log(option, i, data);
+                        console.log(
+                          data[option.optionSlug][spreadsheetSlug][
+                            subStreadsheetSlug
+                          ][i.slug]
+                        );
+                        i.value =
+                          data[option.optionSlug][spreadsheetSlug][
+                            subStreadsheetSlug
+                          ][i.slug];
+                      });
+                    }
+                  );
+                }
+              }
+            );
+          }
+        });
+      } else {
+        spreadsheets.forEach(
+          ({ slug: spreadsheetSlug, fields, twoD, subSpreadsheets }) => {
+            if (!twoD) {
+              fields.forEach((i) => {
+                i.value = data[spreadsheetSlug][i.slug];
+              });
+            } else {
+              subSpreadsheets.forEach(
+                ({ fields, subStreadsheetSlug, subSpreadsheetTitle }) => {
+                  fields.forEach((i) => {
+                    i.value = data[spreadsheetSlug][subStreadsheetSlug][i.slug];
+                  });
+                }
+              );
+            }
+          }
+        );
+      }
     },
     stepFieldsdataUpdate(state, action) {},
     stepFieldsdataRemove(state, action) {},
