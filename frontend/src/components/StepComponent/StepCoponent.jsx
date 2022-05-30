@@ -29,9 +29,34 @@ import {
   Radio,
   Divider,
 } from "@mui/material";
+import { styled } from "@mui/material/styles";
 import StyledTextField from "../StyledTextField";
 import Segment from "../Segment";
 import ExpandForm from "../ExpandForm";
+
+const StyledDivider = styled(Divider)(({ theme, index, fieldsLength }) => {
+  return {
+    display:
+      (index > 0 && (index + 1) % 4 === 0) || index + 1 === fieldsLength
+        ? "none"
+        : "block",
+    [theme.breakpoints.down("md")]: {
+      display:
+        (index !== 0 && (index + 1) % 3 === 0) || index + 1 === fieldsLength
+          ? "none"
+          : "block",
+    },
+    [theme.breakpoints.down("sm")]: {
+      display:
+        (index !== 0 && (index + 1) % 2 === 0) || index + 1 === fieldsLength
+          ? "none"
+          : "block",
+    },
+    [theme.breakpoints.down(427)]: {
+      display: "none",
+    },
+  };
+});
 
 function Navigation({
   finished,
@@ -104,22 +129,37 @@ function Options({ options, slug }) {
   };
 
   return (
-    <FormControl>
+    <FormControl
+      sx={{
+        width: "100%",
+        border: "1px solid #231e4638",
+        borderRadius: "0.28571429rem",
+        padding: "15px 15px 5px",
+        margin: "10px 0 15px",
+      }}
+    >
       <FormLabel>Select option</FormLabel>
+      <Divider sx={{ m: "5px 0" }} />
       <RadioGroup
         value={value}
         onChange={handleChange}
         sx={{ flexDirection: "row" }}
       >
-        {options.map((i) => {
+        {options.map((i, index) => {
           return (
-            <FormControlLabel
-              key={v4()}
-              checked={i.active}
-              value={i.optionSlug}
-              control={<Radio />}
-              label={i.optionTitle}
-            />
+            <>
+              <FormControlLabel
+                // sx={{ m: "0 " }}
+                key={v4()}
+                checked={i.active}
+                value={i.optionSlug}
+                control={<Radio />}
+                label={i.optionTitle}
+              />
+              {options.length !== index + 1 && (
+                <Divider flexItem orientation="vertical" sx={{ mr: "12px" }} />
+              )}
+            </>
           );
         })}
       </RadioGroup>
@@ -138,7 +178,6 @@ export default function StepComponent({
   const finished = useSelector(selectFinished);
   const steps = useSelector(selectSteps);
   const stepFieldsData = useSelector(selectStepFieldsData(stepSlug));
-
   const dispatch = useDispatch();
   const {
     register,
@@ -175,23 +214,42 @@ export default function StepComponent({
                 !segment.twoD ? (
                   <React.Fragment key={v4()}>
                     <Segment title={segment.title}>
-                      {segment.fields.map((field) => (
-                        <StyledTextField
-                          key={v4()}
-                          label={field.field_title}
-                          error={errors?.[field.slug] ? true : false}
-                          {...register(
-                            `${option.optionSlug}.${segment.slug}.${field.slug}`,
-                            {
-                              validate: {
-                                isNum: (value) =>
-                                  validator.isNumeric(value) ||
-                                  "Value must be a number",
-                              },
+                      {segment.fields.map((field, index) => (
+                        <>
+                          <StyledTextField
+                            key={v4()}
+                            label={field.field_title}
+                            error={
+                              errors?.[option.optionSlug]?.[segment.slug]?.[
+                                field.slug
+                              ]
+                                ? true
+                                : false
                             }
-                          )}
-                          helperText={errors?.[field.slug]?.message || false}
-                        />
+                            {...register(
+                              `${option.optionSlug}.${segment.slug}.${field.slug}`,
+                              {
+                                validate: {
+                                  isNum: (value) =>
+                                    validator.isNumeric(value) ||
+                                    "Value must be a number",
+                                },
+                              }
+                            )}
+                            helperText={
+                              errors?.[option.optionSlug]?.[segment.slug]?.[
+                                field.slug
+                              ]?.message || false
+                            }
+                          />
+                          <StyledDivider
+                            flexItem
+                            orientation="vertical"
+                            variant="middle"
+                            index={index}
+                            fieldsLength={segment.fields.length}
+                          />
+                        </>
                       ))}
                     </Segment>
                     {segment.canBeExpanded.flag && (
@@ -210,29 +268,62 @@ export default function StepComponent({
                       padding: "15px",
                     }}
                   >
+                    <Typography
+                      sx={(theme) => {
+                        return {
+                          color: theme.palette.text.secondary,
+                          fontWeight: "bold",
+                          fontSize: "1.25rem",
+                          marginBottom: "7px",
+                          [theme.breakpoints.down(376)]: {
+                            fontSize: "1rem",
+                          },
+                        };
+                      }}
+                    >
+                      {segment.title}
+                    </Typography>
                     {segment.subSpreadsheets.map((subs) => {
                       return (
                         <React.Fragment key={v4()}>
                           <Segment title={subs.subSpreadsheetTitle} key={v4()}>
-                            {subs.fields.map((field) => (
-                              <StyledTextField
-                                key={v4()}
-                                label={field.field_title}
-                                error={errors?.[field.slug] ? true : false}
-                                {...register(
-                                  `${option.optionSlug}.${segment.slug}.${subs.subStreadsheetSlug}.${field.slug}`,
-                                  {
-                                    validate: {
-                                      isNum: (value) =>
-                                        validator.isNumeric(value) ||
-                                        "Value must be a number",
-                                    },
+                            {subs.fields.map((field, index) => (
+                              <>
+                                <StyledTextField
+                                  key={v4()}
+                                  label={field.field_title}
+                                  error={
+                                    errors?.[option.optionSlug]?.[
+                                      segment.slug
+                                    ]?.[subs.subStreadsheetSlug]?.[field.slug]
+                                      ? true
+                                      : false
                                   }
-                                )}
-                                helperText={
-                                  errors?.[field.slug]?.message || false
-                                }
-                              />
+                                  {...register(
+                                    `${option.optionSlug}.${segment.slug}.${subs.subStreadsheetSlug}.${field.slug}`,
+                                    {
+                                      validate: {
+                                        isNum: (value) =>
+                                          validator.isNumeric(value) ||
+                                          "Value must be a number",
+                                      },
+                                    }
+                                  )}
+                                  helperText={
+                                    errors?.[option.optionSlug]?.[
+                                      segment.slug
+                                    ]?.[subs.subStreadsheetSlug]?.[field.slug]
+                                      ?.message || false
+                                  }
+                                />
+                                <StyledDivider
+                                  flexItem
+                                  orientation="vertical"
+                                  variant="middle"
+                                  index={index}
+                                  fieldsLength={subs.fields.length}
+                                />
+                              </>
                             ))}
                           </Segment>
                           <Divider />
@@ -256,28 +347,88 @@ export default function StepComponent({
           !segment.twoD ? (
             <React.Fragment key={v4()}>
               <Segment title={segment.title}>
-                {segment.fields.map((field) => (
-                  <StyledTextField
-                    key={v4()}
-                    label={field.field_title}
-                    error={errors?.[field.slug] ? true : false}
-                    {...register(`${segment.slug}.${field.slug}`, {
-                      validate: {
-                        isNum: (value) =>
-                          validator.isNumeric(value) ||
-                          "Value must be a number",
-                      },
-                    })}
-                    helperText={errors?.[field.slug]?.message || false}
-                  />
-                ))}
+                {segment.fields.map((field, index) => {
+                  return (
+                    <>
+                      <StyledTextField
+                        key={v4()}
+                        label={field.field_title}
+                        error={
+                          errors?.[segment.slug]?.[field.slug] ? true : false
+                        }
+                        {...register(`${segment.slug}.${field.slug}`, {
+                          validate: {
+                            isNum: (value) =>
+                              validator.isNumeric(value) ||
+                              "Value must be a number",
+                          },
+                        })}
+                        helperText={
+                          errors?.[segment.slug]?.[field.slug]?.message || false
+                        }
+                      />
+                      <StyledDivider
+                        flexItem
+                        orientation="vertical"
+                        variant="middle"
+                        index={index}
+                        fieldsLength={segment.fields.length}
+                      />
+                    </>
+                  );
+                })}
               </Segment>
               {segment.canBeExpanded.flag && (
                 <ExpandForm segment={segment} stepSlug={stepSlug} />
               )}
             </React.Fragment>
           ) : (
-            <h1>hello</h1>
+            segment.subSpreadsheets.map((subs) => {
+              return (
+                <React.Fragment key={v4()}>
+                  <Segment title={subs.subSpreadsheetTitle} key={v4()}>
+                    {subs.fields.map((field, index) => (
+                      <>
+                        <StyledTextField
+                          key={v4()}
+                          label={field.field_title}
+                          error={
+                            errors?.[segment.slug]?.[subs.subStreadsheetSlug]?.[
+                              field.slug
+                            ]
+                              ? true
+                              : false
+                          }
+                          {...register(
+                            `${segment.slug}.${subs.subStreadsheetSlug}.${field.slug}`,
+                            {
+                              validate: {
+                                isNum: (value) =>
+                                  validator.isNumeric(value) ||
+                                  "Value must be a number",
+                              },
+                            }
+                          )}
+                          helperText={
+                            errors?.[segment.slug]?.[subs.subStreadsheetSlug]?.[
+                              field.slug
+                            ]?.message || false
+                          }
+                        />
+                        <StyledDivider
+                          flexItem
+                          orientation="vertical"
+                          variant="middle"
+                          index={index}
+                          fieldsLength={subs.fields.length}
+                        />
+                      </>
+                    ))}
+                  </Segment>
+                  <Divider />
+                </React.Fragment>
+              );
+            })
           )
         )
       )}

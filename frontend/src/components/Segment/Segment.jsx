@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, Divider } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
 const StyledSegment = styled(Box)(({ theme }) => ({
@@ -22,15 +22,15 @@ const StyledSegment = styled(Box)(({ theme }) => ({
     [theme.breakpoints.down("md")]: {},
     ".MuiTextField-root": {
       margin: "10px 5px 5px 5px",
-      width: "calc(100% / 4 - 10px)",
+      width: "calc(100% / 4 - 11px)",
       [theme.breakpoints.down("md")]: {
-        width: "calc(100% / 3 - 10px)",
+        width: "calc(100% / 3 - 11px)",
       },
       [theme.breakpoints.down("sm")]: {
-        width: "calc(100% / 2 - 10px)",
+        width: "calc(100% / 2 - 11px)",
       },
       [theme.breakpoints.down(427)]: {
-        width: "calc(100% - 10px)",
+        width: "calc(100% - 11px)",
       },
       ".MuiInputLabel-root": {
         [theme.breakpoints.down(376)]: {
@@ -45,6 +45,7 @@ const Segment = ({ children, title = "" }) => {
   return (
     <StyledSegment>
       <Typography variant="h6">{title}</Typography>
+      <Divider sx={{ m: "0 0 15px 0" }} />
       <Box>{children}</Box>
     </StyledSegment>
   );

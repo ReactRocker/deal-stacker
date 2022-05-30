@@ -235,9 +235,55 @@ export const selectActiveStep = (state) =>
   state.strategy.steps.find((i) => i?.active === true);
 export const selectSkipped = (state) =>
   state.strategy.steps.find((i) => i?.skipped === true);
-export const selectStepFieldsData = (slug) => (state) => {
-  const res = state.strategy.stepFieldsData[slug] || null;
-  return res;
+export const selectStepFieldsData = (stepSlug) => (state) => {
+  const { hasOptions, options, spreadsheets } = state.strategy.steps.find(
+    (i) => i.slug === stepSlug
+  );
+  let res;
+  if (hasOptions) {
+    res = options.reduce((acc, option) => {
+      acc[option.optionSlug] = acc[option.optionSlug] || {};
+      option.spreadsheets.forEach((segment) => {
+        acc[option.optionSlug][segment.slug] =
+          acc[option.optionSlug][segment.slug] || {};
+        if (!segment.twoD) {
+          segment.fields.forEach((field) => {
+            acc[option.optionSlug][segment.slug][field.slug] = field.value;
+          });
+        } else {
+          segment.subSpreadsheets.forEach((sub) => {
+            acc[option.optionSlug][segment.slug][sub.subStreadsheetSlug] =
+              acc[option.optionSlug][segment.slug][sub.subStreadsheetSlug] || {};
+            sub.fields.forEach((field) => {
+              acc[option.optionSlug][segment.slug][sub.subStreadsheetSlug][
+                field.slug
+              ] = field.value;
+            });
+          });
+        }
+      });
+      return acc;
+    }, {});
+  } else {
+    res = spreadsheets.reduce((acc, segment) => {
+      acc[segment.slug] = acc[segment.slug] || {};
+      if (!segment.twoD) {
+        segment.fields.forEach((field) => {
+          acc[segment.slug][field.slug] = field.value;
+        });
+      } else {
+        segment.subSpreadsheets.forEach((sub) => {
+          acc[segment.slug][sub.spreadsheetSlug] =
+            acc[segment.slug][sub.spreadsheetSlug] || {};
+          sub.fields.forEach((field) => {
+            acc[segment.slug][sub.spreadsheetSlug][field.slug] = field.value;
+          });
+        });
+      }
+      return acc;
+    }, {});
+  }
+  return res || {};
 };
 export const selectAll = (state) => state.strategy;
 
